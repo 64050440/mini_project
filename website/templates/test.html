@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Highlight Table Cells</title>
+    <style>
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      table,
+      th,
+      td {
+        border: 1px solid black;
+      }
+
+      th,
+      td {
+        padding: 10px;
+        text-align: center;
+      }
+
+      .highlight {
+        background-color: yellow;
+      }
+    </style>
+  </head>
+  <body>
+    <label for="startRow">Start Row:</label>
+    <input type="number" id="startRow" min="1" max="5" value="1" />
+
+    <label for="startCol">Start Column:</label>
+    <input type="number" id="startCol" min="1" max="5" value="1" />
+
+    <label for="endRow">End Row:</label>
+    <input type="number" id="endRow" min="1" max="5" value="1" />
+
+    <label for="endCol">End Column:</label>
+    <input type="number" id="endCol" min="1" max="5" value="1" />
+
+    <button onclick="highlightCells()">Highlight Cells</button>
+
+    <table id="myTable">
+      <thead>
+        <tr>
+          <th>Header 1</th>
+          <th>Header 2</th>
+          <th>Header 3</th>
+          <th>Header 4</th>
+          <th>Header 5</th>
+        </tr>
+        thead>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td>Row 1, Col 1</td>
+          <td>Row 1, Col 2</td>
+          <td>Row 1, Col 3</td>
+          <td>Row 1, Col 4</td>
+          <td>Row 1, Col 5</td>
+        </tr>
+        <tr>
+          <td>Row 2, Col 1</td>
+          <td>Row 2, Col 2</td>
+          <td>Row 2, Col 3</td>
+          <td>Row 2, Col 4</td>
+          <td>Row 2, Col 5</td>
+        </tr>
+        <tr>
+          <td>Row 3, Col 1</td>
+          <td>Row 3, Col 2</td>
+          <td>Row 3, Col 3</td>
+          <td>Row 3, Col 4</td>
+          <td>Row 3, Col 5</td>
+        </tr>
+        <tr>
+          <td>Row 4, Col 1</td>
+          <td>Row 4, Col 2</td>
+          <td>Row 4, Col 3</td>
+          <td>Row 4, Col 4</td>
+          <td>Row 4, Col 5</td>
+        </tr>
+        <tr>
+          <td>Row 5, Col 1</td>
+          <td>Row 5, Col 2</td>
+          <td>Row 5, Col 3</td>
+          <td>Row 5, Col 4</td>
+          <td>Row 5, Col 5</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <script>
+      function highlightCells() {
+        var startRow = parseInt(document.getElementById("startRow").value) - 1;
+        var startCol = parseInt(document.getElementById("startCol").value) - 1;
+        var endRow = parseInt(document.getElementById("endRow").value);
+        var endCol = parseInt(document.getElementById("endCol").value);
+
+        var table = document.getElementById("myTable");
+
+        for (var i = startRow; i < endRow; i++) {
+          for (var j = startCol; j < endCol; j++) {
+            var cell = table.rows[i].cells[j];
+            cell.classList.add("highlight");
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

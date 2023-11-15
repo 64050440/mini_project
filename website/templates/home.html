@@ -1,0 +1,50 @@
+{%extends "base.html"%} {% block title%}Homey{% endblock %} {%block content%}
+<!--
+<h1 align="center">Notes</h1>
+<ul class="list-group list-group-flush" id="notes">
+  {% for note in user.notes %}
+  <li class="list-group-item">
+    {{note.data}}
+    <button type="button" class="close" onClick="deleteNote({{ note.id }})">
+      send to index.js
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </li>
+
+  {% endfor %}
+</ul>
+<form method="POST">
+  <textarea name="note" id="note" class="form-control"></textarea>
+  <div align="center">
+    <br />
+    <button type="submit" class="btn btn-primary">Add Note</button>
+  </div>
+</form>
+-->
+<div align="center">
+  <div align="center">
+    <br />
+
+    {% for classroom in classrooms %}
+    <button
+      type="button"
+      class="btn btn-info"
+      id="room{{ classroom.room_number }}Button"
+      onclick="gotoRoomPage({{ classroom.room_number }})"
+    >
+      Room {{ classroom.room_number }}
+    </button>
+    {% endfor %}
+    <div id="roomDisplay" align="center">
+      <!-- ที่นี่คือส่วนที่จะแสดงข้อมูลห้อง -->
+    </div>
+    <button
+      onclick="location.href = '/add_classroom';"
+      id="myButton"
+      class="float-left submit-button"
+    >
+      add classroom
+    </button>
+  </div>
+</div>
+{%endblock%}

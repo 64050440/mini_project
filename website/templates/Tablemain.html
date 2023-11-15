@@ -1,0 +1,145 @@
+{% extends "base.html" %} {% block title %}Classroom Booking{% endblock %} {%
+block content %}
+
+<style>
+  /* Your existing styles here */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  th,
+  td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th:not(:first-child),
+  td:not(:first-child) {
+    /* Adjust the width as needed for better visual consistency */
+    width: 8%;
+  }
+
+  .table-bordered,
+  .table-bordered th,
+  .table-bordered td {
+    border: 2px solid #000 !important;
+  }
+
+  .booked {
+    background-color: #ff0000;
+  }
+</style>
+
+<div id="currentDate" align="center">
+  <h2 id="roomid" name="roomid">Room {{ room }}</h2>
+
+  <p id="dateDisplay"></p>
+  <p id="weekRange">
+     {{ monday.strftime("%d %B %Y")|safe }} -  {{
+    friday.strftime("%d %B %Y")|safe }}
+  </p>
+
+
+
+  <button id="previousWeekButton" onclick="decreasedate()" class="btn btn-secondary">Previous Week</button>
+  <button id="nextWeekButton" onclick="increasedate()" class="btn btn-secondary">Next Week</button>
+  
+</div>
+<br />
+
+
+</div>
+
+<table class="table table-bordered" align="center">
+  <thead>
+    <tr>
+      <th>Time</th>
+      <th>7.00-8.00</th>
+      <th>8.00-9.00</th>
+      <th>9.00-10.00</th>
+      <th>10.00-11.00</th>
+      <th>11.00-12.00</th>
+      <th>12.00-13.00</th>
+      <th>13.00-14.00</th>
+      <th>14.00-15.00</th>
+      <th>15.00-16.00</th>
+      <th>16.00-17.00</th>
+      <th>17.00-18.00</th>
+      <th>18.00-19.00</th>
+    </tr>
+  </thead>
+
+  <!-- ... (previous HTML code) -->
+
+  <tbody>
+    {% for day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] %}
+    <tr>
+        <td>{{ day }}</td>
+        {% set booked = [] %}
+        {# Use a list to store booked status for each time slot #}
+        {% for time_slot in [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18] %}
+        {% set _ = booked.append(false) %}
+        {# Initialize booked status for each time slot #}
+        {% for booking in bookings %}
+        {% if booking.classroom.room_number == room %}
+        {% if booking.start_date.date() <= friday.date() and booking.end_date.date() >= monday.date() %}
+        {% if day == booking.start_date.strftime('%A') and time_slot >= booking.start_time and time_slot < booking.end_time %}
+        {% set _ = booked.pop() %}
+        {# Remove the last element (false) #}
+        {% set _ = booked.append(true) %}
+        {# Add true to represent booking #}
+        {% endif %}
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+        <td {% if booked[-1] %}class="booked" {% endif %}></td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</tbody>
+
+
+  <!-- ... (remaining HTML code) -->
+</table>
+
+<br />
+<div align="center">
+  <button
+    type="button"
+    class="btn btn-primary btn-lg"
+    id="book"
+    onclick="gotoBookingPage({{ room }})"
+  >
+    Booking
+  </button>
+</div>
+
+<!--<script src="..\static\table.js"></script>-->
+<script>
+  function increasedate() {
+    console.log("increasedate() triggered");
+    fetch("/increase_monday", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({}),
+    });
+  }
+
+  function decreasedate() {
+    console.log("decreasedate() triggered");
+    fetch("/decrease_monday", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({}),
+    });
+  }
+</script>
+
+
+{%endblock%}

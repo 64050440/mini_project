@@ -1,0 +1,35 @@
+{% extends "base.html" %} {% block title %}Add classroom{% endblock %} {% block
+content %}
+
+<h1 align="center">Classrooms</h1>
+
+<form method="POST">
+  <label>Room Name</label>
+  <textarea
+    name="classroom"
+    id="classroom"
+    class="form-control"
+    required
+  ></textarea>
+  <div align="center">
+    <br />
+    <button type="submit" class="btn btn-primary">Add Classroom</button>
+  </div>
+</form>
+
+<ul class="list-group list-group-flush" id="classrooms">
+  {% for classroom in classrooms %}
+  <li class="list-group-item">
+    room {{ classroom.room_number }}
+    <button
+      type="button"
+      class="close"
+      onClick="deleteClassroom({{ classroom.id }})"
+    >
+      <!--send to index.js-->
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </li>
+  {% endfor %}
+</ul>
+{%endblock%}

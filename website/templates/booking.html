@@ -1,0 +1,134 @@
+{% extends "base.html" %} {% block title %}Classroom Booking{% endblock %} {%
+block content %}
+<br />
+<h3 align="center">Booking room {{ room }}</h3>
+<button
+  type="button"
+  class="btn btn-info"
+  id="room102Button"
+  onclick="gotoRoomPage({{ room }})"
+>
+  Back
+</button>
+
+<form method="POST">
+  <br />
+  <div class="row">
+    <div class="col">
+      <label for="startSelect">Start Time</label>
+      <select class="form-control" id="startSelect" name="startSelect" required>
+        <option>7.00</option>
+        <option>8.00</option>
+        <option>9.00</option>
+        <option>10.00</option>
+        <option>11.00</option>
+        <option>12.00</option>
+        <option>13.00</option>
+        <option>14.00</option>
+        <option>15.00</option>
+        <option>16.00</option>
+        <option>17.00</option>
+        <option>18.00</option>
+
+        <!-- Options will be dynamically populated with JavaScript -->
+      </select>
+    </div>
+    <div class="col">
+      <label for="endSelect">End Time</label>
+      <select class="form-control" id="endSelect" name="endSelect" required>
+        <!-- Options will be dynamically populated with JavaScript -->
+      </select>
+    </div>
+  </div>
+  <br />
+  <label for="startSelect">date</label>
+  <input
+    type="date"
+    class="form-control"
+    id="datePicker"
+    name="datePicker"
+    oninput="validateDate()"
+  />
+  <div class="mb-3">
+    <br />
+    <label for="weeksSelect">Weeks</label>
+    <input type="number" id="weeks" name="weeks" min="1" max="5" required />
+  </div>
+
+  <br />
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+<div align="center">
+  <h1>All room {{ room }} Bookings</h1>
+
+  <table border="1" class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>classroom</th>
+        <th>Start Time</th>
+        <th>End Time</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Action</th>
+        <!-- Add more headers as needed -->
+      </tr>
+    </thead>
+    <tbody>
+      {% for booking in user.bookings %} {%if booking.classroom.room_number ==
+      room %}
+      <tr>
+        <td>{{ booking.id }}</td>
+        <td>{{ booking.classroom.room_number}}</td>
+        <td>{{ booking.start_time }}.00 น.</td>
+        <td>{{ booking.end_time }}.00 น.</td>
+        <td>{{ booking.start_date.strftime("%d/%m/%Y") }}</td>
+        <td>{{ booking.end_date.strftime("%d/%m/%Y") }}</td>
+        <td>
+          <button
+            type="button"
+            class="close"
+            onClick="deletebooking({{ booking.id }},{{ room }})"
+          >
+            <!--send to index.js-->
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </td>
+        <!-- Add more cells as needed -->
+      </tr>
+      {%endif%} {% endfor %}
+    </tbody>
+  </table>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+    $("#startSelect").on("change", function () {
+      updateEndOptions();
+    });
+
+    // Initial update based on the default selected value of 'startSelect'
+    updateEndOptions();
+
+    function updateEndOptions() {
+      var startValue = parseFloat($("#startSelect").val());
+      var endSelect = $("#endSelect");
+      var endValue = parseFloat(endSelect.val());
+
+      // Update 'End' select options
+      endSelect.empty();
+      for (var i = startValue + 1; i <= 19.0; i += 1) {
+        // Assuming a maximum value of 17.00, adjust as needed
+        endSelect.append("<option>" + i.toFixed(2) + "</option>");
+      }
+
+      // Ensure 'End' select value is greater than 'Start' select value
+      if (endValue <= startValue) {
+        endSelect.val((startValue + 1).toFixed(2));
+      }
+    }
+  });
+</script>
+
+{%endblock%}

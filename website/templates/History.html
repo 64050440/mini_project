@@ -1,0 +1,35 @@
+{% extends "base.html" %} {% block title %}Booking History{% endblock %} {%
+block content %}
+
+<h1>All Bookings</h1>
+
+<table border="1" class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th>ID</th>
+      <th>classroom</th>
+      <th>Start Time</th>
+      <th>End Time</th>
+      <th>Start Date</th>
+      <th>End Date</th>
+
+      <!-- Add more headers as needed -->
+    </tr>
+  </thead>
+  <tbody>
+    {% for booking in user.bookings %}
+    <tr>
+      <td>{{ booking.id }}</td>
+      <td>{{ booking.classroom.room_number}}</td>
+      <td>{{ booking.start_time }}.00 น.</td>
+      <td>{{ booking.end_time }}.00 น.</td>
+      <td>{{ booking.start_date.strftime("%d/%m/%Y") }}</td>
+      <td>{{ booking.end_date.strftime("%d/%m/%Y") }}</td>
+
+      <!-- Add more cells as needed -->
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{%endblock%}
